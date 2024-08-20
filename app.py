@@ -1,4 +1,5 @@
 from flask import Flask,render_template
+import secrets
 
 app = Flask(__name__)
 
@@ -11,6 +12,10 @@ app.register_blueprint(main_blueprint)
 app.register_blueprint(blog_blueprint)
 app.register_blueprint(about_blueprint)
 app.register_blueprint(admin_blueprint)
+
+
+# Set the secret key
+app.config['SECRET_KEY'] = secrets.token_hex(16)
 
 
 

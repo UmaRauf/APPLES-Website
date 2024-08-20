@@ -1,3 +1,5 @@
 flask
 app
 Jinja2
+WTForms
+Flask-WTF
