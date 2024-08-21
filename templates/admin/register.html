@@ -12,26 +12,38 @@
                 {% endif %}
             {% endwith %}
             <h3 class="title is-3">Register</h3>
-        <div class="box">
-            <form method="POST">
-                <div class="field">
-                    {{ form.csrf_token() }}
-                    <div class="control">
-                        {{ form.username(class="input", placeholder="Username") }}
+            <div class="box">
+                <form method="POST">
+                    <div class="field">
+                        {{ form.csrf_token() }}
+                        <div class="control">
+                            {{ form.username(class="input", placeholder="Email Address") }}
+                            {% if form.username.errors %}
+                                <p class="help is-danger">{{ form.username.errors[0] }}</p>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        {{ form.password(class="input", placeholder="Password") }}
+                    <div class="field">
+                        <div class="control">
+                            {{ form.password(class="input", placeholder="Password") }}
+                            {% if form.password.errors %}
+                                <p class="help is-danger">{{ form.password.errors[0] }}</p>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-                <div>
-                    {{ form.submit(class="button is-info is-centered") }}
-                </div>
-            </form>
+                    <div class="field">
+                        <div class="control">
+                            {{ form.confirm_password(class="input", placeholder="Confirm Password") }}
+                            {% if form.confirm_password.errors %}
+                                <p class="help is-danger">{{ form.confirm_password.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div>
+                        {{ form.submit(class="button is-info is-centered") }}
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-        </div>
-    </div>
-
 {% endblock %}
