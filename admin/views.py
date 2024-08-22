@@ -1,9 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, session
 from admin.forms import RegisterForm, LoginForm
+from werkzeug.security import check_password_hash, generate_password_hash
 
 admin_blueprint = Blueprint('admin', __name__)
-
-users = {"admin@example.com": "Password123" } #example
 
 @admin_blueprint.route('/admin', methods=['GET', 'POST'])
 def admin():
@@ -11,38 +10,38 @@ def admin():
 
 @admin_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
+    from models import User  # Import here to avoid circular dependency
+    from application import db  # Import here to avoid circular dependency
+
     form = LoginForm()
     if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
-
-        # Check if the username exists and the password is correct
-        if username in users and users[username] == password:
-            session['user'] = username  # Log the user in by setting a session
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and check_password_hash(user.password, form.password.data):
+            session['user'] = user.username
             flash('Login successful!', 'success')
-            return redirect(url_for('admin.dashboard'))  # Redirect to a dashboard or homepage
+            return redirect(url_for('admin.admin'))
         else:
             flash('Invalid username or password', 'danger')
 
-    # Re-render the form with potential errors
     return render_template('admin/login.html', form=form)
-
-@admin_blueprint.route('/dashboard')
-def dashboard():
-    if 'user' in session:
-        return f"Welcome {session['user']}! This is your dashboard."
-    else:
-        flash('Please log in to access this page.', 'warning')
-        return redirect(url_for('admin.login'))
 
 @admin_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegisterForm()
+    from models import User  # Import here to avoid circular dependency
+    from application import db  # Import here to avoid circular dependency
 
+    form = RegisterForm()
     if form.validate_on_submit():
-        # For demonstration, we print the user data; in production, save to the database
-        print(form.data.get('username'))
-        print(form.data.get('password'))
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            flash('Admin email address already used')
+            return render_template('admin/register.html', form=form)
+
+        hashed_password = generate_password_hash(form.password.data, method='scrypt')
+        new_user = User(username=form.username.data, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+
         flash('Registration successful!', 'success')
         return redirect(url_for('admin.login'))
 

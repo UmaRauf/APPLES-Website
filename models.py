@@ -1,4 +1,4 @@
-from application import db,app
+from extensions import db
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -10,9 +10,11 @@ class User(db.Model):
         self.username = username
         self.password = password
 
-
-# initialises the database
-def init_db():
+# Initializes the database
+def init_db(app):
     with app.app_context():
         db.drop_all()
         db.create_all()
+        admin = User(username='admin@email.com', password='admin123')
+        db.session.add(admin)
+        db.session.commit()

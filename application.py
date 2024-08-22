@@ -1,5 +1,4 @@
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
 
@@ -16,7 +15,8 @@ app.config['SQLALCHEMY_ECHO'] = os.getenv('SQLALCHEMY_ECHO') == 'true'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS') == 'true'
 
 # Initialize the database
-db = SQLAlchemy(app)
+from extensions import db
+db.init_app(app)
 
 # Register blueprints
 from main.views import main_blueprint
@@ -28,6 +28,10 @@ app.register_blueprint(main_blueprint, url_prefix='/main')
 app.register_blueprint(blog_blueprint, url_prefix='/blog')
 app.register_blueprint(about_blueprint, url_prefix='/about')
 app.register_blueprint(admin_blueprint, url_prefix='/admin')
+
+# Initialize the database if needed
+from models import init_db
+init_db(app)
 
 # Define a route for the index page
 @app.route('/')
