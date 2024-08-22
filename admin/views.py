@@ -3,9 +3,7 @@ from admin.forms import RegisterForm, LoginForm
 
 admin_blueprint = Blueprint('admin', __name__)
 
-users = {
-    "admin@example.com": "Password123"  # This is just for demonstration; use hashed passwords in production
-}
+users = {"admin@example.com": "Password123" } #example
 
 @admin_blueprint.route('/admin', methods=['GET', 'POST'])
 def admin():
