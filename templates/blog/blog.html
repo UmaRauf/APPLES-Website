@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Events Blog</h1>
-    <p>Welcome to the events blog! Stay tuned for more updates.</p>
+<h1>Blog Posts</h1>
+
+{% for post in posts %}
+    <div class="post">
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.content }}</p>
+    </div>
+{% else %}
+    <p>No posts available.</p>
+{% endfor %}
+
 {% endblock %}
