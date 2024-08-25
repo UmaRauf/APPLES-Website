@@ -22,13 +22,8 @@ def create():
     form = PostForm()
 
     if form.validate_on_submit():
-        # Assuming you have a logged-in user in the session
-        user_id = session.get('user_id')  # Get the logged-in user's ID from session
-        if not user_id:
-            flash('You need to be logged in to create a post', 'danger')
-            return redirect(url_for('admin.login'))  # Redirect to login if not logged in
 
-        new_post = Post(title=form.title.data, content=form.body.data, user_id=user_id)
+        new_post = Post(title=form.title.data, content=form.body.data,user_id=1)
 
         db.session.add(new_post)
         db.session.commit()
