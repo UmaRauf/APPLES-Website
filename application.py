@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from dotenv import load_dotenv
 import os
+from flask_login import LoginManager
 
 # Load environment variables from a .env file
 load_dotenv()
@@ -29,9 +30,16 @@ app.register_blueprint(blog_blueprint, url_prefix='/blog')
 app.register_blueprint(about_blueprint, url_prefix='/about')
 app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
-# Initialize the database if needed
-from models import init_db
-init_db(app)
+
+#admin login initialisation
+login_manager = LoginManager(app)
+login_manager.login_view = 'admin.login'
+login_manager.init_app(app)
+
+from models import User
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 # Define a route for the index page
 @app.route('/')

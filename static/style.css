@@ -137,3 +137,11 @@ section {
     font-size: 22px !important;
 }
 
+.post {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+.post h2 {
+    margin-top: 0;
+}
