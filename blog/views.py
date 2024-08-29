@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, session
 from blog.forms import PostForm
 from models import Post
+from flask_login import login_required
 
 
 blog_blueprint = Blueprint('blog', __name__, template_folder='templates')
@@ -16,6 +17,7 @@ def blog():
 
 
 @blog_blueprint.route('/create', methods=['GET', 'POST'])
+@login_required
 def create():
     from application import db
 

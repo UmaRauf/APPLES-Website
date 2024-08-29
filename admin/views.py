@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, session
 from admin.forms import RegisterForm, LoginForm
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask_login import login_user
+from flask_login import login_user,login_required
 
 admin_blueprint = Blueprint('admin', __name__)
 
 @admin_blueprint.route('/admin', methods=['GET', 'POST'])
+@login_required
 def admin():
     return render_template('admin/admin.html')
 
