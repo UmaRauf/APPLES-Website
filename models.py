@@ -35,11 +35,14 @@ class Post(db.Model):
     # Add a new column to store the date and time of the post
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-    def __init__(self, title, content, user_id):
+    image = db.Column(db.String(255), nullable=True)
+
+    def __init__(self, title, content, user_id,image=None):
         self.title = title
         self.content = content
         self.user_id = user_id
         self.created_at = datetime.utcnow()
+        self.image = image
 
 # Initializes the database
 def init_db(app):

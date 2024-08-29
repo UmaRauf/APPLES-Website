@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-    
     <div class="column is-6 is-offset-3">
         <h3 class="title is-3">Create Post</h3>
         <div class="box">
-            <form method="POST">
+            <!-- Make sure to include enctype="multipart/form-data" to allow file uploads -->
+            <form method="POST" enctype="multipart/form-data">
                 <div class="field">
                     {{ form.csrf_token() }}
                     <div class="control">
                         {{ form.title(class="input", placeholder="Title") }}
                         {% for error in form.title.errors %}
-                            {{ error }}
+                            <p class="help is-danger">{{ error }}</p>
                         {% endfor %}
                     </div>
                 </div>
@@ -19,15 +19,23 @@
                     <div class="control">
                         {{ form.body(class="textarea", placeholder="Body") }}
                         {% for error in form.body.errors %}
-                            {{ error }}
+                            <p class="help is-danger">{{ error }}</p>
                         {% endfor %}
                     </div>
                 </div>
-                <div>
-                    {{ form.submit(class="button is-info is-centered") }}
+                <div class="field">
+                    <div class="control">
+                        {{ form.image.label(class="label") }} <!-- Label for the image input -->
+                        {{ form.image(class="input") }} <!-- File input for the image -->
+                        {% for error in form.image.errors %}
+                            <p class="help is-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="field has-text-centered">
+                    {{ form.submit(class="button is-info") }}
                 </div>
             </form>
         </div>
     </div>
-    
 {% endblock %}
