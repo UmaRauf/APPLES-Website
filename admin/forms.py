@@ -1,5 +1,5 @@
 import re
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm,RecaptchaField
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
@@ -51,4 +51,5 @@ def no_special_characters(form, field):
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Email(), no_special_characters])
     password = PasswordField('Password', validators=[DataRequired(), no_special_characters])
+    recaptcha = RecaptchaField()
     submit = SubmitField('Login')
