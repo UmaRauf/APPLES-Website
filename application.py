@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from dotenv import load_dotenv
 import os
-from flask_login import LoginManager
+from flask_login import LoginManager,logout_user
 
 # Load environment variables from a .env file
 load_dotenv()
@@ -14,6 +14,10 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_ECHO'] = os.getenv('SQLALCHEMY_ECHO') == 'true'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS') == 'true'
+
+#set the captcha configs
+app.config['RECAPTCHA_PUBLIC_KEY'] = os.getenv('RECAPTCHA_PUBLIC_KEY')
+app.config['RECAPTCHA_PRIVATE_KEY'] = os.getenv('RECAPTCHA_PRIVATE_KEY')
 
 # Initialize the database
 from extensions import db
