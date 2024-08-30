@@ -1,5 +1,7 @@
 **APPLES WEBSITE** ver 1.0
 
+first download the requirements listed in requirements.txt
+
 TO RESET DB (python console)
 
 -from application import app  
