@@ -32,16 +32,11 @@ def create():
         if image:
             filename = secure_filename(image.filename)
             image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-        else:
-            filename = None  # No image provided
-
-        new_post = Post(title=form.title.data, content=form.body.data, user_id=current_user.id, image=filename)
-
-        db.session.add(new_post)
-        db.session.commit()
-
-        flash('Post created successfully!', 'success')
-        return redirect(url_for('blog.blog'))  # Redirect to the blog page
+            new_post = Post(title=form.title.data, content=form.body.data, user_id=current_user.id, image=filename)
+            db.session.add(new_post)
+            db.session.commit()
+            flash('Post created successfully!', 'success')
+            return redirect(url_for('blog.blog'))
 
     return render_template('blog/create.html', form=form)
 

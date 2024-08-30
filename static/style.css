@@ -1,6 +1,6 @@
 /* Reset styles */
 html {
-    font-family: 'Roboto Light', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: #445A9A;
     background-repeat: no-repeat;
     background-size: cover;
@@ -121,7 +121,7 @@ section {
 }
 
 .navbar {
-    background-color: lightblue !important;
+    background-color: sienna !important;
 }
 
 .navbar-item {

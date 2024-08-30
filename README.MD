@@ -24,4 +24,5 @@ by using the university's (or any kind donor's) server.
 3. If the university is interested in further development (https setting,database setup etc.) I will be able
 to assist with major changes for the following month only.
 4. Changes such as designs are easy and I will be able to help anytime.
+5. I will continue to work on a delete function for the blog posts
 

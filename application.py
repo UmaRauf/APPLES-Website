@@ -20,8 +20,7 @@ app.config['RECAPTCHA_PUBLIC_KEY'] = os.getenv('RECAPTCHA_PUBLIC_KEY')
 app.config['RECAPTCHA_PRIVATE_KEY'] = os.getenv('RECAPTCHA_PRIVATE_KEY')
 
 # Set the upload folder
-app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'static', 'uploads')
-
+app.config['UPLOAD_FOLDER'] = 'static/images/uploads'
 # Ensure the upload directory exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
