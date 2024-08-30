@@ -23,10 +23,44 @@
 
             <!-- Logout Button -->
             <div class="field has-text-centered">
-                <form action="{{ url_for('admin.logout') }}" method="post">
-                    <button type="submit" class="button is-danger">Logout</button>
-                </form>
+                <div class="box">
+                    <form action="{{ url_for('admin.logout') }}" method="post">
+                        <button type="submit" class="button is-danger is-fullwidth">Logout</button>
+                    </form>
+                </div>
             </div>
+        </div>
+
+        <!-- Change Password Form -->
+        <div class="box">
+            <h1 class="title is-4 has-text-centered">Change Password</h1>
+            <form method="POST" action="{{ url_for('admin.admin') }}">
+                {{ form.hidden_tag() }}
+                <div class="field">
+                    {{ form.current_password.label(class="label") }}
+                    <div class="control">
+                        {{ form.current_password(class="input") }}
+                    </div>
+                </div>
+
+                <div class="field">
+                    {{ form.new_password.label(class="label") }}
+                    <div class="control">
+                        {{ form.new_password(class="input") }}
+                    </div>
+                </div>
+
+                <div class="field">
+                    {{ form.confirm_new_password.label(class="label") }}
+                    <div class="control">
+                        {{ form.confirm_new_password(class="input") }}
+                    </div>
+                </div>
+
+                <div class="control">
+                    {{ form.submit(class="button is-primary is-fullwidth") }}
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}
