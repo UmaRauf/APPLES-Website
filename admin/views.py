@@ -34,7 +34,6 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user and user.check_password(form.password.data):
-            session['user'] = user.username
             flash('Login successful!', 'success')
             login_user(user)
             return redirect(url_for('admin.admin'))
@@ -42,6 +41,7 @@ def login():
             flash('Invalid username or password', 'danger')
 
     return render_template('admin/login.html', form=form)
+
 
 @admin_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
@@ -55,8 +55,7 @@ def register():
             flash('Admin email address already used')
             return render_template('admin/register.html', form=form)
 
-        hashed_password = generate_password_hash(form.password.data, method='scrypt')
-        new_user = User(username=form.username.data, password=hashed_password)
+        new_user = User(username=form.username.data, password=form.password.data)  # Use raw password here
         db.session.add(new_user)
         db.session.commit()
 
@@ -64,6 +63,7 @@ def register():
         return redirect(url_for('admin.login'))
 
     return render_template('admin/register.html', form=form)
+
 
 @admin_blueprint.route('/logout', methods=['GET', 'POST'])
 @login_required

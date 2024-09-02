@@ -1,13 +1,18 @@
 from flask import Flask, render_template
 from dotenv import load_dotenv
 import os
-from flask_login import LoginManager,logout_user
+from flask_login import LoginManager, logout_user
+from flask_wtf import CSRFProtect
+
+
+
 
 # Load environment variables from a .env file
 load_dotenv()
 
 # Initialize the Flask app
 app = Flask(__name__)
+csrf = CSRFProtect(app)
 
 # Set the secret key and database configurations
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -15,7 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_ECHO'] = os.getenv('SQLALCHEMY_ECHO') == 'true'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS') == 'true'
 
-#set the captcha configs
+# Set the captcha configs
 app.config['RECAPTCHA_PUBLIC_KEY'] = os.getenv('RECAPTCHA_PUBLIC_KEY')
 app.config['RECAPTCHA_PRIVATE_KEY'] = os.getenv('RECAPTCHA_PRIVATE_KEY')
 
@@ -26,7 +31,10 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # Initialize the database
 from extensions import db
+from models import init_db
 db.init_app(app)
+with app.app_context():
+    init_db(app)
 
 # Register blueprints
 from main.views import main_blueprint
@@ -39,23 +47,18 @@ app.register_blueprint(blog_blueprint, url_prefix='/blog')
 app.register_blueprint(about_blueprint, url_prefix='/about')
 app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
-
-#admin login initialisation
+# Admin login initialization
 login_manager = LoginManager(app)
 login_manager.login_view = 'admin.login'
 login_manager.init_app(app)
 
 from models import User
+
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))
 
-from models import User
-# error handlers and render error pages
-@login_manager.user_loader
-def load_user(id):
-    return User.query.get(int(id))
-
+# Error handlers and render error pages
 @app.errorhandler(400)
 def bad_request_error(error):
     return render_template('400.html'), 400
@@ -80,6 +83,10 @@ def service_unavailable_error(error):
 @app.route('/')
 def index():
     return render_template('main/main.html')
+
+# Load testing configuration if in testing environment
+if os.getenv('FLASK_ENV') == 'testing':
+    app.config.from_object('config.TestingConfig')
 
 # Run the application
 if __name__ == '__main__':

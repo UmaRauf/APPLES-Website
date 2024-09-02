@@ -60,3 +60,4 @@ def init_db(app):
         db.session.add(first_post)
 
         db.session.commit()
+
