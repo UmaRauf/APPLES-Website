@@ -71,4 +71,4 @@ def logout():
     from flask_login import logout_user
     if current_user.is_authenticated:
         logout_user()
-        return redirect(url_for('main.index'))  # Adjust this to your main page or appropriate route
+        return redirect(url_for('main.main'))  # Adjust this to your main page or appropriate route
